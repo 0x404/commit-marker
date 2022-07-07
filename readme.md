@@ -9,7 +9,9 @@ It is a help tool, used to mark the commit message dataset. Given the subject, M
 
 ## Usage
 
-Use the following command on the command line
+Use the following command on the command line.
+
+It is recommended to use [VS Code](https://code.visualstudio.com/) or [Windows Terminal](https://github.com/microsoft/terminal), because you can directly click the commit detail link to see detail commit message.
 
 ```shell
 
