@@ -23,7 +23,7 @@ HEADERS: list = [
 class CSVUpdater:
     """A simple CSV updater"""
 
-    def __init__(self, filename):
+    def __init__(self, filename, mode="m"):
         self.file_path = Path(filename)
         self.rows = []
         self.csv_reader = None
@@ -31,10 +31,14 @@ class CSVUpdater:
         self.csv_file = None
         self.tmp_file = None
         self.totol_raws = 0
+        self.mode = mode
 
     @property
     def completed_raws(self):
+        """Warning: only can be accessed when quit updater"""
         assert self.totol_raws > 0
+        for row in self.csv_reader:
+            self.rows.append(row)
         completed_raws = sum(1 for row in self.rows if len(row["Labels"]) > 0)
         return completed_raws
 
@@ -55,8 +59,9 @@ class CSVUpdater:
         assert self.csv_writer is not None, "I/O in unopened file"
         for rowno, row in enumerate(self.csv_reader):
             self.rows.append(row)
-            if len(row["Labels"]) == 0:
-                yield (rowno, row)
+            if len(row["Labels"]) != 0 and self.mode == "m":
+                continue
+            yield (rowno, row)
 
     def __enter__(self):
         """Open files and readers"""
@@ -77,9 +82,9 @@ class CSVUpdater:
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Close files, flush updated rows and copy unchanged rows"""
         self.csv_writer.writeheader()
-        self.csv_writer.writerows(self.rows)
         for row in self.csv_reader:
-            self.csv_writer.writerow(row)
+            self.rows.append(row)
+        self.csv_writer.writerows(self.rows)
 
         self.csv_file.close()
         self.tmp_file.close()
@@ -96,39 +101,55 @@ class UpdaterCLI:
         self.detail_color = "\x1b[0;30;46m"
         self.changed_color = "\x1b[0;30;47m"
         self.default_color = "\x1b[0m"
+        self.label_color = "\x1b[0;30;41m"
+        self.rowno_color = "\x1b[6;32;47m"
         pass
 
-    def format_row(self, row):
+    def format_row(self, row, rowno, total, mode):
         """Format a csv row to a friendly commit message"""
-        formated_str = f"\t{self.subject_color}Subject{self.default_color}: {row.get('Subject')}\n\n"
+        formated_str = f"{self.rowno_color}[{rowno}/{total}]{self.default_color}\n\n\n"
+        formated_str += f"\t{self.subject_color}Subject{self.default_color}: {row.get('Subject')}\n\n"
         formated_str += f"\t{self.message_color}Message{self.default_color}: {row.get('Message')}\n\n"
         formated_str += f"\t{self.changed_color}Changed{self.default_color}: {row.get('changed files | + | -| sum')}\n\n"
         formated_str += f"\t{self.detail_color}Detail{self.default_color}: https://github.com/rust-lang/rust/commit/{row.get('Hash')}\n\n"
+        if mode == "r":
+            formated_str += f"\t{self.label_color}Labels{self.default_color}: {row.get('Labels')}\n\n"
         return formated_str
 
     def get_label(self):
-        c2str = {"C": CORRECTIVE, "P": PERFECTIVE, "A": ADAPTIVE, "Q": None}
+        c2str = {
+            "C": CORRECTIVE,
+            "P": PERFECTIVE,
+            "A": ADAPTIVE,
+            "Q": None,
+            "N": "Next",
+        }
         label = input(
-            "input label (C for Corrective, P for Perfective, A for Adaptive, Q for quit) >> "
-        )
+            "input label (C for Corrective, P for Perfective, A for Adaptive, Q for quit, N for next) >> "
+        ).upper()
         while label not in c2str:
             label = input(
-                "input label (C for Corrective, P for Perfective, A for Adaptive, Q for quit) >> "
-            )
+                "input label (C for Corrective, P for Perfective, A for Adaptive, Q for quit, N for next) >> "
+            ).upper()
         return c2str[label]
 
-    def __call__(self, filename, *args, **kwds):
-        with CSVUpdater(filename) as updater:
+    def __call__(self, filename, *args, mode="m", **kwds):
+        with CSVUpdater(filename, mode=mode) as updater:
+            total = updater.totol_raws
+
             for rowno, row in updater:
-                print(self.format_row(row))
+                os.system("cls" if os.name == "nt" else "clear")
+                print(self.format_row(row, rowno, total, mode=mode))
+
                 label = self.get_label()
-                if label is not None:
+                if label in (CORRECTIVE, PERFECTIVE, ADAPTIVE):
                     updater.mark(label)
-                    os.system("cls" if os.name == "nt" else "clear")
+                elif label == "Next":
+                    continue
                 else:
                     break
+
             completed = updater.completed_raws
-            total = updater.totol_raws
             completed_ratio = completed / total
             print(
                 f"mark finished, has completed {completed} commits(total {total}, {completed_ratio:.2f}%)\n"
@@ -139,10 +160,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--file", type=str, required=True)
     parser.add_argument("--gui", action="store_true")
+    parser.add_argument("--review", action="store_true")
     args = parser.parse_args()
 
     if args.gui:
         print("no supported yet")
     else:
         cli = UpdaterCLI()
-        cli(args.file)
+        if args.review:
+            cli(args.file, mode="r")
+        else:
+            cli(args.file)
