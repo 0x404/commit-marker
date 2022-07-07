@@ -13,9 +13,11 @@ Use the following command on the command line
 
 ```shell
 
-python3 marker.py -f yourfile.csv # CLI
+python3 marker.py -f sampled_commits.csv # CLI, default to mark mode
 
-python3 marker.py -f yourfile.csv --gui # no supported yet
+python3 marker.py -f sampled_commits.csv --review # CLI, review mode, show marked commits
+
+python3 marker.py -f sampled_commits.csv --gui # no supported yet
 
 ```
 
@@ -25,4 +27,4 @@ python3 marker.py -f yourfile.csv --gui # no supported yet
 
 * Friendly data display
 * stop at any time, continue at any time
-
+* review marked commits
