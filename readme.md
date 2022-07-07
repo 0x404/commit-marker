@@ -1,9 +1,13 @@
 # Commit Marker
-It is a help tool, used to mark the commit message dataset. Given the subject, Message, and changed file of a git commit, mark which category the commit message belongs to:
+It is a help tool, used to mark the commit message dataset. 
+
+Given the subject, Message, and changed file of a git commit, mark which category the commit message belongs to:
 
 * Corrective: bug fix
 * Perfective: system improvements
 * Adaptive: features
+
+<img src=".\images\CLI.png" style="zoom:67%;" />
 
 
 
