@@ -2,6 +2,7 @@ import os
 import csv
 import shutil
 import argparse
+import keyboard
 from pathlib import Path
 
 CORRECTIVE: str = "Corrective"
@@ -117,23 +118,29 @@ class UpdaterCLI:
         return formated_str
 
     def get_label(self):
+        """Get label input from user"""
         c2str = {
-            "C": CORRECTIVE,
-            "P": PERFECTIVE,
-            "A": ADAPTIVE,
-            "Q": None,
-            "N": "Next",
+            "c": CORRECTIVE,
+            "p": PERFECTIVE,
+            "a": ADAPTIVE,
+            "q": None,
+            "n": "Next",
         }
-        label = input(
-            "input label (C for Corrective, P for Perfective, A for Adaptive, Q for quit, N for next) >> "
-        ).upper()
-        while label not in c2str:
-            label = input(
-                "input label (C for Corrective, P for Perfective, A for Adaptive, Q for quit, N for next) >> "
-            ).upper()
-        return c2str[label]
+        print(
+            "input label (c for Corrective, p for Perfective, a for Adaptive, q for quit, n for next) >> "
+        )
+        while True:
+            pressed_key = keyboard.read_key()
+            if pressed_key in c2str:
+                return c2str[pressed_key]
 
     def __call__(self, filename, *args, mode="m", **kwds):
+        """Lauch command line interface.
+
+        Args:
+            filename(str): CSV file to be processed.
+            mode(str): must be one of "m" or "r", short for "mark" and "review".
+        """
         with CSVUpdater(filename, mode=mode) as updater:
             total = updater.totol_raws
 
