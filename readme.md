@@ -7,7 +7,7 @@ Given the subject, Message, and changed file of a git commit, mark which categor
 * Perfective: system improvements
 * Adaptive: features
 
-<img src="http://image-hosting-404.oss-cn-beijing.aliyuncs.com/img/marker.png" style="zoom:67%;" />
+<img src="http://image-hosting-404.oss-cn-beijing.aliyuncs.com/img/marker.png" />
 
 
 
