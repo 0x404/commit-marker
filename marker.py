@@ -1,3 +1,4 @@
+from cProfile import label
 import os
 import csv
 import shutil
@@ -126,13 +127,14 @@ class UpdaterCLI:
             "q": None,
             "n": "Next",
         }
-        print(
+        label = input(
             "input label (c for Corrective, p for Perfective, a for Adaptive, q for quit, n for next) >> "
-        )
-        while True:
-            pressed_key = keyboard.read_key()
-            if pressed_key in c2str:
-                return c2str[pressed_key]
+        ).lower()
+        while label not in c2str:
+            label = input(
+                "input label (c for Corrective, p for Perfective, a for Adaptive, q for quit, n for next) >> "
+            ).lower()
+        return c2str[label]
 
     def __call__(self, filename, *args, mode="m", **kwds):
         """Lauch command line interface.
