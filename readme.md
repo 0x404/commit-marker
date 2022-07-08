@@ -13,9 +13,15 @@ Given the subject, Message, and changed file of a git commit, mark which categor
 
 ## Usage
 
+It is recommended to use [VS Code](https://code.visualstudio.com/) or [Windows Terminal](https://github.com/microsoft/terminal), because you can directly click the commit detail link to see detail commit message.
+
 Use the following command on the command line.
 
-It is recommended to use [VS Code](https://code.visualstudio.com/) or [Windows Terminal](https://github.com/microsoft/terminal), because you can directly click the commit detail link to see detail commit message.
+```shell
+
+pip3 install -r requirements.txt # install requirement modules
+
+```
 
 ```shell
 
