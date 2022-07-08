@@ -19,12 +19,6 @@ Use the following command on the command line.
 
 ```shell
 
-pip3 install -r requirements.txt # install requirement modules
-
-```
-
-```shell
-
 python3 marker.py -f sampled_commits.csv # CLI, default to mark mode
 
 python3 marker.py -f sampled_commits.csv --review # CLI, review mode, show marked commits
