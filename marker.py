@@ -113,9 +113,9 @@ class UpdaterCLI:
         formated_str += f"\t{self.subject_color}Subject{self.default_color}: {row.get('Subject')}\n\n"
         formated_str += f"\t{self.message_color}Message{self.default_color}: {row.get('Message')}\n\n"
         formated_str += f"\t{self.changed_color}Changed{self.default_color}: {row.get('changed files | + | -| sum').strip()}\n\n"
-        formated_str += f"\t{self.detail_color}Detail{self.default_color}: https://github.com/rust-lang/rust/commit/{row.get('Hash')}\n\n"
+        formated_str += f"\t{self.detail_color}Detail{self.default_color}:  https://github.com/rust-lang/rust/commit/{row.get('Hash')}\n\n"
         if mode == "r":
-            formated_str += f"\t{self.label_color}Labels{self.default_color}: {row.get('Labels')}\n\n"
+            formated_str += f"\t{self.label_color}Labels{self.default_color}:  {row.get('Labels')}\n\n"
         return formated_str
 
     def get_label(self):
