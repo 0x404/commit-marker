@@ -159,7 +159,7 @@ class UpdaterCLI:
                     break
 
             completed = updater.completed_raws
-            completed_ratio = completed / total
+            completed_ratio = completed / total * 100
             print(
                 f"mark finished, has completed {completed} commits(total {total}, {completed_ratio:.2f}%)\n"
             )
