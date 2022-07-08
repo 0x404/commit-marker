@@ -15,13 +15,17 @@ Given the subject, Message, and changed file of a git commit, mark which categor
 
 It is recommended to use [VS Code](https://code.visualstudio.com/) or [Windows Terminal](https://github.com/microsoft/terminal), because you can directly click the commit detail link to see detail commit message.
 
-Use the following command on the command line.
+If you are a Linux user, the code of the master branch cannot be applied, please switch to the [linux branch](https://github.com/0x404/commit-marker/tree/linux)
+
+If you are a Windows user or a MacOS user (not tested), you need to use the following command to install the dependent modules.
 
 ```shell
 
 pip3 install -r requirements.txt # install requirement modules
 
 ```
+
+After that, use the following command on the command line.
 
 ```shell
 
