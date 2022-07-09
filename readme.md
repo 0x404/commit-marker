@@ -1,7 +1,7 @@
 # Commit Marker
 It is a help tool, used to mark the commit message dataset. 
 
-Given the subject, Message, and changed file of a git commit, mark which category the commit message belongs to:
+Given the subject, message, and changed files of a git commit, mark which category the commit message belongs to:
 
 * Corrective: bug fix
 * Perfective: system improvements
@@ -31,6 +31,6 @@ python3 marker.py -f sampled_commits.csv --gui # no supported yet
 
 ## Feature
 
-* Friendly data display
+* friendly data display
 * stop at any time, continue at any time
 * review marked commits
