@@ -31,6 +31,6 @@ python3 marker.py -f sampled_commits.csv --gui # no supported yet
 
 ## Feature
 
-* Friendly data display
+* friendly data display
 * stop at any time, continue at any time
 * review marked commits
