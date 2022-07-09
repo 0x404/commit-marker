@@ -1,9 +1,7 @@
-from cProfile import label
 import os
 import csv
 import shutil
 import argparse
-import keyboard
 from pathlib import Path
 
 CORRECTIVE: str = "Corrective"
