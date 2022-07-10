@@ -15,18 +15,39 @@ Given the subject, message, and changed files of a git commit, mark which catego
 
 It is recommended to use [VS Code](https://code.visualstudio.com/) or [Windows Terminal](https://github.com/microsoft/terminal), because you can directly click the commit detail link to see detail commit message.
 
-use the following command on the command line.
+If you want to mark data, you should use the following command, this will start from the first unlabeled data:
 
 ```shell
 
-python3 marker.py -f sampled_commits.csv # CLI, default to mark mode
-
-python3 marker.py -f sampled_commits.csv --review # CLI, review mode, show marked commits
-
-python3 marker.py -f sampled_commits.csv --gui # no supported yet
+python3 launch.py --mark --file sampled_commits.csv
 
 ```
 
+If you want to review data, you should use the following command. This will start with the first data and display the data labels, which you can modify during the review process:
+
+```shell
+
+python3 launch.py --review --file sampled_commits.csv
+
+```
+
+If you want to have some insights into dataset, you should use the following command.
+
+```shell
+
+python3 launch.py --insight --file sampled_commits.csv
+
+```
+
+If you want to compare two data files, you should use the following command. This will display commits with different label, you can decide which label to use while viewing:
+
+**warning: the result of the comparison will be saved to compare_result.csv in the current folder, so please make sure there is no compare_result.csv in the current file**
+
+```shell
+
+python3 launch.py --compare --file yourfile1.csv --cfile yourfile2.csv
+
+```
 
 
 ## Feature
