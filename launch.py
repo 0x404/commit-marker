@@ -1,6 +1,6 @@
 import argparse
 import sys
-from marker import UpdaterCLI
+from marker import UpdaterCLI, Insighter
 
 class Config:
 
@@ -48,10 +48,10 @@ if __name__ == "__main__":
         cli = UpdaterCLI()
         cli(cfg.file, mode='r')
     elif cfg.insight:
-        #todo
-        pass
+        ins = Insighter()
+        ins(cfg.file)
     elif cfg.compare:
-        #doto
+        print("no supportd yet")
         pass
 
 
