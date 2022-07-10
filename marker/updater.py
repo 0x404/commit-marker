@@ -3,6 +3,7 @@ import shutil
 from pathlib import Path
 from marker.config import *
 
+
 class CSVUpdater:
     """A simple CSV updater"""
 

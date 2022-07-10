@@ -2,6 +2,7 @@ import os
 from marker.updater import CSVUpdater
 from marker.config import *
 
+
 class UpdaterCLI:
     """Command line interface"""
 
