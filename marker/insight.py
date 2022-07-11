@@ -1,27 +1,37 @@
 from collections import defaultdict
-from itertools import count
-from typing import Counter
 from prettytable import PrettyTable
 from marker.config import *
 from marker.updater import CSVUpdater
 
 
 class Insighter:
-    def __init__(self) -> None:
-        pass
-
     @staticmethod
-    def show_count_table(filename):
-        count_table = PrettyTable()
-        count_table.field_names = ["Labeled", "UN-Labeled", "Total"]
+    def show_count_table(filename: str) -> None:
         with CSVUpdater(filename, mode="r") as updater:
             total = updater.totol_raws
             completed = updater.completed_raws
+
+        count_table = PrettyTable()
+        count_table.field_names = ["Labeled", "UN-Labeled", "Total"]
         count_table.add_row([completed, total - completed, total])
         print(count_table, end="\n\n")
 
     @staticmethod
-    def show_label_table(filename):
+    def show_label_table(filename: str) -> None:
+        def contains(sentence: str, words: list[str]) -> bool:
+            sentence = sentence.lower()
+            return any(sentence.find(word) != -1 for word in words)
+
+        counts, relates = defaultdict(int), defaultdict(int)
+        with CSVUpdater(filename, mode="r") as updater:
+            for _, row in updater:
+                label = row["Labels"]
+                subject = row["Subject"]
+                message = row["Message"]
+                counts[label] += 1
+                if any(contains(s, keywords[label]) for s in (subject, message)):
+                    relates[label] += 1
+
         label_table = PrettyTable()
         label_table.field_names = [
             "Category",
@@ -29,23 +39,6 @@ class Insighter:
             "Keyword-Related",
             "Keyword-NotRelated",
         ]
-        counts, relates = defaultdict(int), defaultdict(int)
-
-        def contains(sentence, words):
-            sentence = sentence.lower()
-            return any(sentence.find(word) != -1 for word in words)
-
-        with CSVUpdater(filename, mode="r") as updater:
-            for _, row in updater:
-                label = row["Labels"]
-                subject = row["Subject"]
-                message = row["Message"]
-
-                counts[label] += 1
-                if contains(subject, keywords[label]) or contains(
-                    message, keywords[label]
-                ):
-                    relates[label] += 1
         label_table.add_row(
             [
                 CORRECTIVE,
@@ -72,6 +65,6 @@ class Insighter:
         )
         print(label_table, end="\n\n")
 
-    def __call__(self, filename, *args, **kwds):
+    def __call__(self, filename: str, *args, **kwds) -> None:
         self.show_count_table(filename)
         self.show_label_table(filename)

@@ -14,9 +14,8 @@ class UpdaterCLI:
         self.default_color = "\x1b[0m"
         self.label_color = "\x1b[0;30;41m"
         self.rowno_color = "\x1b[6;32;47m"
-        pass
 
-    def format_row(self, row, rowno, total, mode):
+    def format_row(self, row: list[str], rowno: int, total: int, mode: str):
         """Format a csv row to a friendly commit message"""
         formated_str = f"{self.rowno_color}[{rowno}/{total}]{self.default_color}\n\n\n"
         formated_str += f"\t{self.subject_color}Subject{self.default_color}: {row.get('Subject')}\n\n"
@@ -45,7 +44,7 @@ class UpdaterCLI:
             ).lower()
         return c2str[label]
 
-    def __call__(self, filename, *args, mode="m", **kwds):
+    def __call__(self, filename: str, *args, mode: str = "m", **kwds):
         """Lauch command line interface.
 
         Args:

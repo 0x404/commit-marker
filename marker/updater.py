@@ -7,7 +7,7 @@ from marker.config import *
 class CSVUpdater:
     """A simple CSV updater"""
 
-    def __init__(self, filename, mode="m"):
+    def __init__(self, filename: str, mode: str = "m"):
         self.file_path = Path(filename)
         self.rows = []
         self.csv_reader = None
@@ -19,14 +19,14 @@ class CSVUpdater:
 
     @property
     def completed_raws(self):
-        """Warning: only can be accessed when quit updater"""
+        """FIXME: only can be accessed when quit updater"""
         assert self.totol_raws > 0
         for row in self.csv_reader:
             self.rows.append(row)
         completed_raws = sum(1 for row in self.rows if len(row["Labels"]) > 0)
         return completed_raws
 
-    def mark(self, label, rowno=-1):
+    def mark(self, label: str, rowno: int = -1):
         """Mark a specified commit message with label.
 
         Args:
