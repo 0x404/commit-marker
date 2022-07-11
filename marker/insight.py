@@ -18,7 +18,15 @@ class Insighter:
 
     @staticmethod
     def show_label_table(filename: str) -> None:
+        """Show label detail info.
+        Count the total number of a label, and how much belongs to keyword related.
+
+        Args:
+            filename(str): CSV filename.
+        """
+
         def contains(sentence: str, words: list[str]) -> bool:
+            """check whther sentence contains any one of words"""
             sentence = sentence.lower()
             return any(sentence.find(word) != -1 for word in words)
 
@@ -32,6 +40,9 @@ class Insighter:
                 if any(contains(s, keywords[label]) for s in (subject, message)):
                     relates[label] += 1
 
+        def makerow(key):
+            return [key, counts[key], relates[key], counts[key] - relates[key]]
+
         label_table = PrettyTable()
         label_table.field_names = [
             "Category",
@@ -39,30 +50,9 @@ class Insighter:
             "Keyword-Related",
             "Keyword-NotRelated",
         ]
-        label_table.add_row(
-            [
-                CORRECTIVE,
-                counts[CORRECTIVE],
-                relates[CORRECTIVE],
-                counts[CORRECTIVE] - relates[CORRECTIVE],
-            ]
-        )
-        label_table.add_row(
-            [
-                PERFECTIVE,
-                counts[PERFECTIVE],
-                relates[PERFECTIVE],
-                counts[PERFECTIVE] - relates[PERFECTIVE],
-            ]
-        )
-        label_table.add_row(
-            [
-                ADAPTIVE,
-                counts[ADAPTIVE],
-                relates[ADAPTIVE],
-                counts[ADAPTIVE] - relates[ADAPTIVE],
-            ]
-        )
+        label_table.add_row(makerow(CORRECTIVE))
+        label_table.add_row(makerow(ADAPTIVE))
+        label_table.add_row(makerow(ADAPTIVE))
         print(label_table, end="\n\n")
 
     def __call__(self, filename: str, *args, **kwds) -> None:
