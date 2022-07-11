@@ -53,7 +53,7 @@ If you want to compare two data files, you should use the following command.
 
 This will display commits with different label, you can decide which label to use while viewing:
 
-**warning: the result of the comparison will be saved to compare_result.csv in the current folder, so please make sure there is no compare_result.csv in the current file**
+**warning: the result of the comparison will be saved to compare_result.csv in the current folder, so please make sure there is no compare_result.csv in the current folder**
 
 ```shell
 
