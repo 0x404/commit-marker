@@ -49,23 +49,25 @@ class UpdaterCLI:
 
         Args:
             filename(str): CSV file to be processed.
-            mode(str): must be one of "m" or "r", short for "mark" and "review".
+            mode(str): must be one of "m" or "r", short for "mark" or "review".
         """
         with CSVUpdater(filename, mode=mode) as updater:
-            total = updater.totol_raws
-
             for rowno, row in updater:
+                # clear terminal for every commit message
                 os.system("cls" if os.name == "nt" else "clear")
                 print(self.format_row(row, rowno, total, mode=mode))
 
                 label = self.get_label()
+                # label should be one of `Corrective`, `Perfective`, `Adaptive`,
+                # `Next` or `None`
                 if label in (CORRECTIVE, PERFECTIVE, ADAPTIVE):
                     updater.mark(label)
                 elif label == "Next":
                     continue
                 else:
                     break
-
+            # print current progress info
+            total = updater.totol_raws
             completed = updater.completed_raws
             completed_ratio = completed / total * 100
             print(
